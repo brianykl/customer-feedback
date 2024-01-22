@@ -1,0 +1,17 @@
+.App-header {
+  text-align: center;
+  font-family: Georgia, Garamond, serif;
+}
+
+textarea {
+  width: 300px;
+  height: 100px;
+  margin-top: 10px;
+  font-family: Georgia, Garamond, serif;
+}
+
+button {
+  margin-top: 10px;
+  margin-left: 10px;
+  font-family: Georgia, Garamond, serif;
+}
