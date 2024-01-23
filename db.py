@@ -1,12 +1,14 @@
+from dotenv import load_dotenv 
 import os
 import psycopg
 from psycopg import OperationalError, DatabaseError
 import uuid
 
-
+load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 def get_db_connection():
+    print("DATABASE_URL:", DATABASE_URL)
     try:
         return psycopg.connect(DATABASE_URL)
     except OperationalError as e:
@@ -51,13 +53,13 @@ def id_generator():
     return str(uuid.uuid4())
 
 def create_feedback_table():
-    create_table_query = """
+    create_table_query = """ 
     CREATE TABLE IF NOT EXISTS feedback (
     id UUID PRIMARY KEY,
     email TEXT NOT NULL,
     category TEXT NOT NULL,
     feedback_text TEXT NOT NULL,
-    submission_time TIMESTAMP DEFAULT CURRENT TIMESTAMP
+    submission_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );"""
 
     try:
