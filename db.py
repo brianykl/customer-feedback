@@ -1,6 +1,7 @@
 import os
 import psycopg
 from psycopg import OperationalError, DatabaseError
+import uuid
 
 
 DATABASE_URL = os.getenv('DATABASE_URL')
@@ -46,4 +47,28 @@ def delete_record(table, condition, args = None):
     query = f"DELETE FROM {table} WHERE {condition}"
     return execute_query(query, args)
 
+def id_generator():
+    return str(uuid.uuid4())
+
+def create_feedback_table():
+    create_table_query = """
+    CREATE TABLE IF NOT EXISTS feedback (
+    id UUID PRIMARY KEY,
+    email TEXT NOT NULL,
+    category TEXT NOT NULL,
+    feedback_text TEXT NOT NULL,
+    submission_time TIMESTAMP DEFAULT CURRENT TIMESTAMP
+    );"""
+
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(create_table_query)
+                print("feedback table created successfully")
+    
+    except DatabaseError as e:
+        print(f'error creating feedback table: {e}')
+
+if __name__ == '__main__':
+    create_feedback_table()
 
