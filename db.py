@@ -25,7 +25,7 @@ def execute_query(query, args = None, fetch = False):
     except DatabaseError as e:
         print(f'database query error {e}')
             
-def add_record(table, record):
+def add_record(table, record: dict):
     columns = ', '.join(record.keys())
     values = tuple(record.values())
     placeholders = ', '.join(['%s'] * len(record))
@@ -71,6 +71,24 @@ def create_feedback_table():
     except DatabaseError as e:
         print(f'error creating feedback table: {e}')
 
+def create_feedback_analysis_table():
+    create_feedback_analysis_table_query = """
+    CREATE TABLE IF NOT EXISTS feedback_analysis (
+    id UUID PRIMARY KEY,
+    topic VARCHAR (255),
+    sentiment VARCHAR (255),
+    FOREIGN KEY (id) REFERENCES feedback(id)
+    );"""
+
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(create_feedback_analysis_table_query)
+                print("feedback_analysis table created successfully")
+    
+    except DatabaseError as e:
+        print(f'error creating feedback_analysis table: {e}')
+
 if __name__ == '__main__':
-    create_feedback_table()
+    create_feedback_analysis_table()
 
