@@ -1,0 +1,19 @@
+syntax = "proto3";
+package nlp;
+
+service NLPService {
+    rpc AnalyzeSentiment (FeedbackRequest) returns (SentimentResponse) {}
+    rpc CategorizeFeedback (FeedbackRequest) returns (CategoryResponse) {}
+}
+
+message FeedbackRequest {
+    string feedback_text = 1;
+}
+
+message SentimentResponse {
+    string sentiment = 1;
+}
+
+message CategoryResponse {
+    string category = 1;
+}
