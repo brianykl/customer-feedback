@@ -3,7 +3,6 @@ package models
 import (
 	"log"
 	// "testing"
-
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -19,26 +18,26 @@ func Connect() *gorm.DB {
 	return db
 }
 
-func Insert(feedback *Feedback) error {
+func Insert(f *Feedback) error {
 	db := Connect()
-	result := db.Create(feedback)
+	result := db.Create(f)
 	if result.Error != nil {
-		log.Println("failed to insert feedback %v", result.Error)
+		log.Printf("failed to insert feedback %v", result.Error)
 		return result.Error
 	}
 
-	log.Println("feedback inserted successfully")
+	log.Printf("feedback inserted successfully")
 	return nil
 }
 
-func Execute(query string, args ...interface{}) error {
-	db := Connect()
+// func Execute(query string, args ...interface{}) error {
+// 	db := Connect()
 
-	// Execute the SQL statement
-	result := db.Exec(query, args...)
-	if result.Error != nil {
-		return result.Error
-	}
+// 	// Execute the SQL statement
+// 	result := db.Exec(query, args...)
+// 	if result.Error != nil {
+// 		return result.Error
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
