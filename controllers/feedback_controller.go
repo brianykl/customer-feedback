@@ -6,6 +6,7 @@ import (
 
 	beego "github.com/beego/beego/v2/server/web"
 	"github.com/brianykl/customer-feedback/models"
+	"github.com/brianykl/customer-feedback/services"
 )
 
 type FeedbackController struct {
@@ -21,6 +22,7 @@ type FeedbackPayload struct {
 
 func (c *FeedbackController) CreateFeedback() {
 	var payload FeedbackPayload
+	payload.FeedbackID = services.GenerateID()
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &payload); err != nil {
 		c.Ctx.Output.SetStatus(400)
 		c.Data["json"] = map[string]string{"error": "bad request"}
