@@ -8,9 +8,9 @@ function FeedbackForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const feedbackData = {
-            Email: email,         // Capitalized to match the backend expectation
-            Category: category,  // Capitalized to match the backend expectation
-            FeedbackText: feedbackText // Already correctly capitalized
+            Email: email,         
+            Category: category,  
+            FeedbackText: feedbackText 
         };
 
         try {
