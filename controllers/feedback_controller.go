@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"log"
 
 	beego "github.com/beego/beego/v2/server/web"
 	"github.com/brianykl/customer-feedback/models"
@@ -12,10 +13,10 @@ type FeedbackController struct {
 }
 
 type FeedbackPayload struct {
-	FeedbackID   string `json:"feedback_id"`
-	Email        string `json:"email"`
-	Category     string `json:"category"`
-	FeedbackText string `json:"feedback_text"`
+	FeedbackID   string `json:"FeedbackID"`
+	Email        string `json:"Email"`
+	Category     string `json:"Category"`
+	FeedbackText string `json:"FeedbackText"`
 }
 
 func (c *FeedbackController) CreateFeedback() {
@@ -26,7 +27,7 @@ func (c *FeedbackController) CreateFeedback() {
 		c.ServeJSON()
 		return
 	}
-
+	log.Printf("Received payload: %+v\n", payload)
 	feedback := models.NewFeedback(payload.FeedbackID, payload.Email, payload.Category, payload.FeedbackText)
 	if err := models.Insert(feedback); err != nil {
 		c.Ctx.Output.SetStatus(500)
