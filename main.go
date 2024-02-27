@@ -1,7 +1,7 @@
 package main
 
 import (
-	_ "github.com/brianykl/customer-feedback/routers"
+	_ "github.com/brianykl/customer-feedback/api/routers"
 
 	beego "github.com/beego/beego/v2/server/web"
 	context "github.com/beego/beego/v2/server/web/context"

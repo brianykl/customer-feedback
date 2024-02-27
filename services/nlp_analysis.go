@@ -25,7 +25,7 @@ var examples = []cohere.Example{
 }
 
 func Client(apiKey string) *cohere.Client {
-	co, err := cohere.CreateClient("<<apiKey>>")
+	co, err := cohere.CreateClient(apiKey)
 	if err != nil {
 		log.Print(err)
 		return nil
@@ -33,35 +33,51 @@ func Client(apiKey string) *cohere.Client {
 	return co
 }
 
-func SentimentAnalysis(feedback_text []string) string {
-	co := Client("APIkey")
-	response, err := co.Classify(cohere.ClassifyOptions{
+type CohereClient interface {
+	Classify(options cohere.ClassifyOptions) (*cohere.ClassifyResponse, error)
+	Generate(options cohere.GenerateOptions) (*cohere.GenerateResponse, error)
+}
+
+type MockCohereClient struct {
+	ClassifyResponse *cohere.ClassifyResponse
+	ClassifyErr      error
+	GenerateResponse *cohere.GenerateResponse
+	GenerateErr      error
+}
+
+func (m *MockCohereClient) Classify(options cohere.ClassifyOptions) (*cohere.ClassifyResponse, error) {
+	return m.ClassifyResponse, m.ClassifyErr
+}
+
+func (m *MockCohereClient) Generate(options cohere.GenerateOptions) (*cohere.GenerateResponse, error) {
+	return m.GenerateResponse, m.GenerateErr
+}
+
+func SentimentAnalysis(client CohereClient, feedback_text []string) (string, error) {
+	response, err := client.Classify(cohere.ClassifyOptions{
 		Inputs:   feedback_text,
 		Examples: examples,
 	})
 
 	if err != nil {
 		log.Print(err)
-		return "error"
+		return "", err
 	}
 
-	return response.ID
+	return response.ID, nil
 }
 
-func TopicModelling(feedback_text string) []cohere.Generation {
-	co := Client("APIkey")
-	var max_tokens uint
-	max_tokens = 10
-	response, err := co.Generate(cohere.GenerateOptions{
-		Model:     "large", // You can choose from different model sizes
+func TopicModelling(client CohereClient, feedback_text string) ([]cohere.Generation, error) {
+	var max_tokens = uint(10)
+	response, err := client.Generate(cohere.GenerateOptions{
 		Prompt:    feedback_text,
 		MaxTokens: &max_tokens,
 	})
 
 	if err != nil {
 		log.Print(err)
-		return nil
+		return nil, err
 	}
 
-	return response.Generations
+	return response.Generations, nil
 }

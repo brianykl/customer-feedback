@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package customer_feedback;
+
+option go_package = "github.com/brianykl/customer-feedback/services";
+
+service SentimentAnalysis {
+    rpc AnalyzeText (TextRequest) returns (SentimentResponse) {}
+}
+
+service TopicModelling {
+    rpc AnalyzeText (TextRequest) returns (TopicResponse) {}
+}
+
+// The request message containing the text.
+message TextRequest {
+  string text = 1;
+}
+
+// The response message containing the sentiment.
+message SentimentResponse {
+  string sentiment = 1;
+}
+
+// The response message containing the topic label.
+message TopicResponse {
+  string topic = 1;
+}
