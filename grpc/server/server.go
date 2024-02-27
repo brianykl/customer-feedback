@@ -49,7 +49,7 @@ func (s *SentimentAnalysisServer) AnalyzeText(ctx context.Context, in *pb.TextRe
 		log.Printf("Error processing Sentiment Analysis: %v", err)
 		return nil, err // Ensure to return the error to the client.
 	}
-	log.Printf(sentiment)
+	log.Println(sentiment)
 	return &pb.SentimentResponse{Sentiment: sentiment}, nil
 }
 

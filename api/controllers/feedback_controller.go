@@ -46,30 +46,30 @@ func (c *FeedbackController) CreateFeedback() {
 	c.Data["json"] = map[string]string{"message": "feedback created successfully"}
 	c.ServeJSON()
 
-	go func() {
-		saClient := grpcclient.NewSentimentAnalysisClient()
-		saResponseChan := saClient.AnalyzeText(feedback.FeedbackText)
-		tmClient := grpcclient.NewTopicModellingClient()
-		tmResponseChan := tmClient.AnalyzeText(feedback.FeedbackText)
+	go processSentimentAnalysis(feedback.FeedbackText)
+	go processTopicModelling(feedback.FeedbackText)
+}
 
-		// Process sentiment analysis and topic modeling responses as they arrive
-		// Note: This is for demonstration; adapt logging, error handling, and response processing as needed
-		for i := 0; i < 2; i++ { // Expecting two responses
-			select {
-			case saResponse := <-saResponseChan:
-				if saResponse != nil {
-					log.Printf("Sentiment Analysis Response: %v", saResponse)
-					// Update feedback with sentiment analysis result here
-				}
-			case tmResponse := <-tmResponseChan:
-				if tmResponse != nil {
-					log.Printf("Topic Modelling Response: %v", tmResponse)
-					// Update feedback with topic modeling result here
-				} else {
-					log.Printf("BOOBA")
-				}
-			}
-			log.Printf("ITERATED")
-		}
-	}()
+func processSentimentAnalysis(feedbackText string) {
+	saClient := grpcclient.NewSentimentAnalysisClient()
+	saResponseChan := saClient.AnalyzeText(feedbackText)
+
+	// Process sentiment analysis response
+	saResponse := <-saResponseChan
+	if saResponse != nil {
+		log.Printf("Sentiment Analysis Response: %v", saResponse)
+		// Update feedback with sentiment analysis result here
+	}
+}
+
+func processTopicModelling(feedbackText string) {
+	tmClient := grpcclient.NewTopicModellingClient()
+	tmResponseChan := tmClient.AnalyzeText(feedbackText)
+
+	// Process topic modeling response
+	tmResponse := <-tmResponseChan
+	if tmResponse != nil {
+		log.Printf("Topic Modelling Response: %v", tmResponse)
+		// Update feedback with topic modeling result here
+	}
 }

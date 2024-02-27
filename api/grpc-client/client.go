@@ -62,7 +62,7 @@ func (c *SentimentAnalysisClient) AnalyzeText(text string) <-chan *pb.SentimentR
 		defer cancel()
 		response, err := c.client.AnalyzeText(ctx, &pb.TextRequest{Text: text})
 		if err != nil {
-			log.Printf("Error analyzing text: %v", err)
+			log.Printf("Error analyzing text for sentiment analysis: %v", err)
 			return
 		}
 		resultChan <- response
@@ -76,7 +76,7 @@ func (c *TopicModellingClient) AnalyzeText(text string) <-chan *pb.TopicResponse
 
 	go func() {
 		defer close(resultChan)
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer cancel()
 		response, err := c.client.AnalyzeText(ctx, &pb.TextRequest{Text: text})
 		if err != nil {
