@@ -17,7 +17,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	cc := services.Client("MYAPIKEY")
+	cc := services.Client("apikey")
 	s := grpc.NewServer()
 
 	saServer := &SentimentAnalysisServer{CohereClient: *cc}

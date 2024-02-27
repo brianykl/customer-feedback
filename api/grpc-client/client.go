@@ -58,7 +58,7 @@ func (c *SentimentAnalysisClient) AnalyzeText(text string) <-chan *pb.SentimentR
 
 	go func() {
 		defer close(resultChan)
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
 		defer cancel()
 		response, err := c.client.AnalyzeText(ctx, &pb.TextRequest{Text: text})
 		if err != nil {
@@ -76,7 +76,7 @@ func (c *TopicModellingClient) AnalyzeText(text string) <-chan *pb.TopicResponse
 
 	go func() {
 		defer close(resultChan)
-		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
 		defer cancel()
 		response, err := c.client.AnalyzeText(ctx, &pb.TextRequest{Text: text})
 		if err != nil {

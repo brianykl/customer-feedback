@@ -64,7 +64,8 @@ func SentimentAnalysis(client CohereClient, feedback_text []string) (string, err
 		return "", err
 	}
 
-	return response.ID, nil
+	sentiment := response.Classifications[0].Prediction
+	return sentiment, nil
 }
 
 func TopicModelling(client CohereClient, feedback_text string) ([]cohere.Generation, error) {
