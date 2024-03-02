@@ -58,8 +58,9 @@ func processSentimentAnalysis(feedbackText string) {
 	saResponse := <-saResponseChan
 	if saResponse != nil {
 		log.Printf("Sentiment Analysis Response: %v", saResponse)
+		save := saResponse.Sentiment[11:]
+		log.Println(save)
 		// Update feedback with sentiment analysis result here
-
 	}
 }
 
@@ -71,6 +72,9 @@ func processTopicModelling(feedbackText string) {
 	tmResponse := <-tmResponseChan
 	if tmResponse != nil {
 		log.Printf("Topic Modelling Response: %v", tmResponse)
-		// Update feedback with topic modeling result here
+		save := tmResponse.Topic[7:]
+		log.Println(save)
+		// models.Insert(save)
+
 	}
 }
