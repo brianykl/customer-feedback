@@ -71,7 +71,7 @@ func (c *FeedbackController) CreateFeedback() {
 	}()
 
 	wg.Wait()
-	analysis := models.NewAnalysis("", sentiment, topic)
+	analysis := models.NewAnalysis(payload.FeedbackID, sentiment, topic)
 	if err := models.Insert(analysis); err != nil {
 		c.Ctx.Output.SetStatus(500)
 		c.Data["json"] = map[string]string{"error": "failed to insert feedback"}
