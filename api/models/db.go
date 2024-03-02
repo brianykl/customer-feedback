@@ -18,9 +18,9 @@ func Connect() *gorm.DB {
 	return db
 }
 
-func Insert(f *Feedback) error {
+func Insert(record interface{}) error {
 	db := Connect()
-	result := db.Create(f)
+	result := db.Create(record)
 	if result.Error != nil {
 		log.Printf("failed to insert feedback %v", result.Error)
 		return result.Error

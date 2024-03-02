@@ -70,8 +70,9 @@ func SentimentAnalysis(client CohereClient, feedback_text []string) (string, err
 
 func TopicModelling(client CohereClient, feedback_text string) ([]cohere.Generation, error) {
 	var max_tokens = uint(3)
+	var prompt = "Please summarize this feedback in one-word: " + feedback_text
 	response, err := client.Generate(cohere.GenerateOptions{
-		Prompt:    feedback_text,
+		Prompt:    prompt,
 		MaxTokens: &max_tokens,
 	})
 
